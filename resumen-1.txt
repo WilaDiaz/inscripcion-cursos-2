@@ -1,0 +1,7 @@
+RESUMEN DEL CURSO
+-----------------
+ID: 1
+Nombre: Curso Cloud Native
+Instructor: Carlos Valverde
+Duración: 40 horas
+Costo: $120000.0
