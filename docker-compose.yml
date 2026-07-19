@@ -30,8 +30,8 @@ services:
       rabbitmq:
         condition: service_healthy
     volumes:
+      - "/home/ec2-user/inscripcion-cursos-2/Wallet_INSCRIPCIONDB:/app/wallet:ro"
 
-    - "/home/ec2-user/inscripcion-cursos-2/Wallet_INSCRIPCIONDB:/app/wallet:ro"
     environment:
       TNS_ADMIN: /app/wallet
 
