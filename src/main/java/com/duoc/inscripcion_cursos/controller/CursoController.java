@@ -18,11 +18,21 @@ public class CursoController {
         this.cursoService = cursoService;
     }
 
+    // GET /cursos
     @GetMapping
     public ResponseEntity<List<Curso>> obtenerCursos() {
         return ResponseEntity.ok(cursoService.obtenerCursos());
     }
 
+    // GET /cursos/{id}
+    @GetMapping("/{id}")
+    public ResponseEntity<Curso> obtenerCursoPorId(@PathVariable Long id) {
+        return cursoService.obtenerCursoPorId(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // POST /cursos
     @PostMapping
     public ResponseEntity<Curso> agregarCurso(@RequestBody Curso curso) {
         Curso cursoGuardado = cursoService.agregarCurso(curso);
@@ -30,5 +40,28 @@ public class CursoController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(cursoGuardado);
+    }
+
+    // PUT /cursos/{id}
+    @PutMapping("/{id}")
+    public ResponseEntity<Curso> actualizarCurso(
+            @PathVariable Long id,
+            @RequestBody Curso curso) {
+
+        return cursoService.actualizarCurso(id, curso)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // DELETE /cursos/{id}
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarCurso(@PathVariable Long id) {
+        boolean eliminado = cursoService.eliminarCurso(id);
+
+        if (!eliminado) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.noContent().build();
     }
 }
