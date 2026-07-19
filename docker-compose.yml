@@ -30,7 +30,7 @@ services:
       rabbitmq:
         condition: service_healthy
     volumes:
-      - "C:/Wallet_INSCRIPCIONDB:/app/wallet:ro"
+      - "./Wallet_INSCRIPCIONDB:/app/wallet:ro"
     environment:
       TNS_ADMIN: /app/wallet
 
