@@ -35,14 +35,16 @@ services:
     environment:
       TNS_ADMIN: /app/wallet
 
-      AWS_ACCESS_KEY_ID: ASIAWHFFCLIYGDL2NHXA
-      AWS_SECRET_ACCESS_KEY: "ay1zHNlkDEbKSVhutnEgkhqD7XOEtXa3YWlPhyPG"
-      AWS_DEFAULT_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION:-us-east-1}
 
       SPRING_RABBITMQ_HOST: rabbitmq
       SPRING_RABBITMQ_PORT: 5672
       SPRING_RABBITMQ_USERNAME: guest
       SPRING_RABBITMQ_PASSWORD: guest
+
 
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: "https://wiladuoc1.b2clogin.com/e99677de-5bd9-40e9-acfb-80acb38a38cb/v2.0/"
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: "https://wiladuoc1.b2clogin.com/wiladuoc1.onmicrosoft.com/B2C_1_inscripcion_v2/discovery/v2.0/keys"
@@ -54,3 +56,4 @@ services:
 networks:
   inscripcion-network:
     driver: bridge
+
