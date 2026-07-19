@@ -35,6 +35,10 @@ services:
     environment:
       TNS_ADMIN: /app/wallet
 
+      AWS_ACCESS_KEY_ID: ASIAWHFFCLIYGDL2NHXA
+      AWS_SECRET_ACCESS_KEY: "ay1zHNlkDEbKSVhutnEgkhqD7XOEtXa3YWlPhyPG"
+      AWS_DEFAULT_REGION: us-east-1
+
       SPRING_RABBITMQ_HOST: rabbitmq
       SPRING_RABBITMQ_PORT: 5672
       SPRING_RABBITMQ_USERNAME: guest
