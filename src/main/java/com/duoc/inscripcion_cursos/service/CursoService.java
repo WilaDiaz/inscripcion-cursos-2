@@ -1,22 +1,25 @@
 package com.duoc.inscripcion_cursos.service;
 
 import com.duoc.inscripcion_cursos.model.Curso;
+import com.duoc.inscripcion_cursos.repository.CursoRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class CursoService {
 
-    private List<Curso> cursos = new ArrayList<>();
+    private final CursoRepository cursoRepository;
+
+    public CursoService(CursoRepository cursoRepository) {
+        this.cursoRepository = cursoRepository;
+    }
 
     public List<Curso> obtenerCursos() {
-        return cursos;
+        return cursoRepository.findAll();
     }
 
     public Curso agregarCurso(Curso curso) {
-        cursos.add(curso);
-        return curso;
+        return cursoRepository.save(curso);
     }
 }

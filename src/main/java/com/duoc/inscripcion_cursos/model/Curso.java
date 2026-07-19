@@ -1,12 +1,52 @@
 package com.duoc.inscripcion_cursos.model;
 
+import jakarta.persistence.*;
+import java.math.BigDecimal;
+
+@Entity
+@Table(name = "CURSOS")
 public class Curso {
-    
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, length = 150)
     private String nombre;
+
+    @Column(length = 500)
+    private String descripcion;
+
+    @Column(nullable = false, length = 150)
     private String instructor;
-    private Integer duracion;
-    private Double costo;
+
+    @Column(name = "duracion_horas", nullable = false)
+    private Integer duracionHoras;
+
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigDecimal costo;
+
+    @Column(nullable = false, length = 20)
+    private String estado = "ACTIVO";
+
+    public Curso() {
+    }
+
+    public Curso(
+            String nombre,
+            String descripcion,
+            String instructor,
+            Integer duracionHoras,
+            BigDecimal costo,
+            String estado
+    ) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.instructor = instructor;
+        this.duracionHoras = duracionHoras;
+        this.costo = costo;
+        this.estado = estado;
+    }
 
     public Long getId() {
         return id;
@@ -24,6 +64,14 @@ public class Curso {
         this.nombre = nombre;
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
     public String getInstructor() {
         return instructor;
     }
@@ -32,20 +80,27 @@ public class Curso {
         this.instructor = instructor;
     }
 
-    public Integer getDuracion() {
-        return duracion;
+    public Integer getDuracionHoras() {
+        return duracionHoras;
     }
 
-    public void setDuracion(Integer duracion) {
-        this.duracion = duracion;
+    public void setDuracionHoras(Integer duracionHoras) {
+        this.duracionHoras = duracionHoras;
     }
 
-    public Double getCosto() {
+    public BigDecimal getCosto() {
         return costo;
     }
 
-    public void setCosto(Double costo) {
+    public void setCosto(BigDecimal costo) {
         this.costo = costo;
-    }   
-}
+    }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+}

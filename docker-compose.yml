@@ -1,8 +1,51 @@
-version: '3'
 services:
+
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: rabbitmq
+    container_name: inscripcion-rabbitmq
+    restart: unless-stopped
     ports:
       - "5672:5672"
       - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - inscripcion-network
+
+  inscripcion-cursos:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: inscripcion-cursos-app
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - "C:/Wallet_INSCRIPCIONDB:/app/wallet:ro"
+    environment:
+      TNS_ADMIN: /app/wallet
+
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: "https://wiladuoc1.b2clogin.com/e99677de-5bd9-40e9-acfb-80acb38a38cb/v2.0/"
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: "https://wiladuoc1.b2clogin.com/wiladuoc1.onmicrosoft.com/B2C_1_inscripcion_v2/discovery/v2.0/keys"
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_AUDIENCES: "449048c5-bb65-40f1-9f56-3cbc9f2d5bea"
+
+    networks:
+      - inscripcion-network
+
+networks:
+  inscripcion-network:
+    driver: bridge

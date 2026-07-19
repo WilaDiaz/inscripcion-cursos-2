@@ -11,9 +11,14 @@ import java.io.IOException;
 public class ResumenService {
 
     private final InscripcionProducer inscripcionProducer;
+    private final S3Service s3Service;
 
-    public ResumenService(InscripcionProducer inscripcionProducer) {
+    public ResumenService(
+            InscripcionProducer inscripcionProducer,
+            S3Service s3Service
+    ) {
         this.inscripcionProducer = inscripcionProducer;
+        this.s3Service = s3Service;
     }
 
     public String generarResumen(Curso curso) throws IOException {
@@ -23,19 +28,25 @@ public class ResumenService {
                 "ID: " + curso.getId() + "\n" +
                 "Nombre: " + curso.getNombre() + "\n" +
                 "Instructor: " + curso.getInstructor() + "\n" +
-                "Duración: " + curso.getDuracion() + " horas\n" +
+                "Duración: " + curso.getDuracionHoras() + " horas\n" +
                 "Costo: $" + curso.getCosto() + "\n";
 
         String nombreArchivo = "resumen-" + curso.getId() + ".txt";
 
         File archivo = new File(nombreArchivo);
 
-        FileWriter writer = new FileWriter(archivo);
-        writer.write(resumen);
-        writer.close();
+        try (FileWriter writer = new FileWriter(archivo)) {
+            writer.write(resumen);
+        }
 
         inscripcionProducer.enviarResumen(resumen);
 
-        return "Resumen generado y enviado a RabbitMQ: " + archivo.getAbsolutePath();
+        String resultadoS3 = s3Service.subirArchivo(
+                archivo.getAbsolutePath(),
+                curso.getId()
+        );
+
+        return "Resumen generado, enviado a RabbitMQ y almacenado en S3. "
+                + resultadoS3;
     }
 }
